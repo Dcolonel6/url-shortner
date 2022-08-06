@@ -9,10 +9,9 @@ const BASE_URL = 'api.tinyurl.com';
 
 *grabs all content from the argv except first two elements. 
 returns an array
-
-* @param {*array} inputs 
+* 
 */
-function grabContentFromCli(inputs){
+function grabContentFromCli(input){
     return argv.slice(2);    
 }
 /**
