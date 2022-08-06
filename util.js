@@ -2,7 +2,7 @@ import { argv } from 'node:process';
 import axios from 'axios';
 import 'dotenv/config' 
 
-const BASE_URL = 'api.tinyurl.com';
+const BASE_URL = 'https://api.tinyurl.com';
 
 
 /*
@@ -23,21 +23,34 @@ function grabContentFromCli(input){
  */
 function sendToShortnerService(urlToShorten,payload,access_token=process.env.API_TOKEN){
 
-    axios.post(`${BASE_URL}/create`,
-        {
-            data: payload
+   const reqConfig = {
+        baseURL: BASE_URL,
+        url: '/create',  
+        method: 'post',     
+        headers:{
+            Authorization: `Bearer ${access_token}`,
+            'Content-Type': 'multipart/form-data'
         },
-        {
-            headers:{
-                'Authorization': `Basic ${access_token}` 
-            }
+        data: payload,
+        transformResponse: [function (data) {
+            // Do whatever you want to transform the data
+            data = JSON.parse(data);
+        
+            return data;
+          }]
 
-        })
+    };
+    
+
+    axios(reqConfig)
     .then((res) =>{
-        console.log(res.data);
+        const {url, tiny_url} = res.data.data;        
+        console.log(`Done \n${url} ==> ${tiny_url} `);
     })
     .catch((error) =>{
-        console.error(error);
+       const {status, statusText } = error.response;
+        console.error(status, statusText);
+        console.log(error.response);
     })
 
 }
