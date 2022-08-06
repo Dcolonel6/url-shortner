@@ -43,7 +43,7 @@ function sendToShortnerService(urlToShorten,payload,access_token=process.env.API
 
 }
 
-export default {
-    grabInputFromCLI: grabContentFromCli,
-    postToShortner: sendToShortnerService
+export {
+    grabContentFromCli as grabInputFromCLI,
+    sendToShortnerService as postToShortner
 };
